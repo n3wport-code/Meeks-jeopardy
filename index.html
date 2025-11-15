@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Friend Group Jeopardy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #001f3f;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    h1 {
+      margin: 16px 0 8px;
+      text-align: center;
+      letter-spacing: 2px;
+    }
+
+    .subtitle {
+      margin-bottom: 16px;
+      font-size: 0.9rem;
+      opacity: 0.9;
+      text-align: center;
+    }
+
+    #board {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(120px, 1fr));
+      gap: 4px;
+      max-width: 900px;
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+
+    .category, .cell {
+      border-radius: 4px;
+      text-align: center;
+      padding: 12px 6px;
+      box-sizing: border-box;
+    }
+
+    .category {
+      background: #004b8d;
+      font-weight: bold;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+    }
+
+    .cell {
+      background: #013a63;
+      cursor: pointer;
+      font-size: 1.2rem;
+      font-weight: bold;
+      transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.08s ease;
+      user-select: none;
+    }
+
+    .cell:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .cell.used {
+      background: #111827;
+      color: #6b7280;
+      cursor: default;
+      text-decoration: line-through;
+    }
+
+    #modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+      box-sizing: border-box;
+      z-index: 10;
+    }
+
+    #modal {
+      background: #0b1120;
+      border-radius: 8px;
+      max-width: 600px;
+      width: 100%;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    #modal-category {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      opacity: 0.8;
+      margin-bottom: 8px;
+    }
+
+    #modal-value {
+      font-size: 1rem;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    #modal-question {
+      font-size: 1.2rem;
+      margin-bottom: 16px;
+    }
+
+    #modal-answer {
+      font-size: 1.1rem;
+      margin-bottom: 16px;
+      display: none;
+      color: #facc15;
+    }
+
+    #modal-buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    button {
+      cursor: pointer;
+      border-radius: 999px;
+      border: none;
+      padding: 8px 16px;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .btn-secondary {
+      background: #374151;
+      color: #e5e7eb;
+    }
+
+    .btn-primary {
+      background: #facc15;
+      color: #111827;
+    }
+
+    .btn-danger {
+      background: #ef4444;
+      color: white;
+    }
+
+    #controls {
+      margin: 8px 0 16px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    #controls button {
+      padding: 6px 12px;
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 700px) {
+      #board {
+        grid-template-columns: repeat(3, minmax(90px, 1fr));
+      }
+      .category {
+        font-size: 0.8rem;
+      }
+      .cell {
+        font-size: 1rem;
+        padding: 10px 4px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Friend Group Jeopardy</h1>
+  <div class="subtitle">Click a value to reveal the question. Click &quot;Show Answer&quot; when you're ready.</div>
+
+  <div id="controls">
+    <button class="btn-secondary" id="reset-board">Reset Board</button>
+  </div>
+
+  <div id="board"></div>
+
+  <div id="modal-backdrop">
+    <div id="modal">
+      <div id="modal-category"></div>
+      <div id="modal-value"></div>
+      <div id="modal-question"></div>
+      <div id="modal-answer"></div>
+      <div id="modal-buttons">
+        <button class="btn-secondary" id="toggle-answer">Show Answer</button>
+        <button class="btn-danger" id="close-modal">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- CONFIGURE YOUR GAME HERE ---
+    // You can edit these categories/questions/answers.
+    const gameData = [
+      {
+        category: "Inside Jokes",
+        clues: [
+          { value: 100, question: "What phrase did Alex say at the beach that we still tease him about?", answer: "“I could’ve been a lifeguard, but...”" },
+          { value: 200, question: "Who fell down the stairs at Taylor’s party?", answer: "Sam" },
+          { value: 300, question: "What song did we scream-sing in the Uber after the concert?", answer: "Mr. Brightside" },
+          { value: 400, question: "Which friend always forgets their wallet?", answer: "Chris" },
+          { value: 500, question: "What’s the name of the cursed group chat we never use anymore?", answer: "Answers will vary, put your own" }
+        ]
+      },
+      {
+        category: "Travel Stories",
+        clues: [
+          { value: 100, question: "Where did we go for our first group trip?", answer: "Asheville" },
+          { value: 200, question: "Who missed their flight on the Vegas trip?", answer: "Jordan" },
+          { value: 300, question: "What food did we eat three times in one day in New York?", answer: "Pizza" },
+          { value: 400, question: "Which city did we get stuck in during a snowstorm?", answer: "Boston" },
+          { value: 500, question: "What landmark did we never actually make it to, despite planning to?", answer: "Put your own" }
+        ]
+      },
+      {
+        category: "Relationships",
+        clues: [
+          { value: 100, question: "Who started dating after meeting at our game night?", answer: "Jamie & Alex" },
+          { value: 200, question: "Which couple has the best combined Halloween costumes?", answer: "Up to you" },
+          { value: 300, question: "Who had the most chaotic first date story?", answer: "Up to you" },
+          { value: 400, question: "Who had their first kiss at the lake house?", answer: "Up to you" },
+          { value: 500, question: "Which friend has sworn off dating apps more than twice?", answer: "Up to you" }
+        ]
+      },
+      {
+        category: "Party Legends",
+        clues: [
+          { value: 100, question: "Who fell asleep on the kitchen floor?", answer: "Up to you" },
+          { value: 200, question: "What drink did we swear to never buy again?", answer: "Fireball / up to you" },
+          { value: 300, question: "Who tried to order 100 chicken nuggets at 3 AM?", answer: "Up to you" },
+          { value: 400, question: "At whose house did the infamous 'Uno Incident' happen?", answer: "Up to you" },
+          { value: 500, question: "What did we accidentally set on fire?", answer: "Up to you" }
+        ]
+      },
+      {
+        category: "Random Trivia",
+        clues: [
+          { value: 100, question: "Who’s the tallest person in the friend group?", answer: "Up to you" },
+          { value: 200, question: "Which friend has the weirdest coffee order?", answer: "Up to you" },
+          { value: 300, question: "Who owns the most board games?", answer: "Up to you" },
+          { value: 400, question: "Which friend is always late?", answer: "Up to you" },
+          { value: 500, question: "Who is most likely to become TikTok famous?", answer: "Up to you" }
+        ]
+      }
+    ];
+
+    const boardEl = document.getElementById("board");
+    const modalBackdrop = document.getElementById("modal-backdrop");
+    const modalCategory = document.getElementById("modal-category");
+    const modalValue = document.getElementById("modal-value");
+    const modalQuestion = document.getElementById("modal-question");
+    const modalAnswer = document.getElementById("modal-answer");
+    const toggleAnswerBtn = document.getElementById("toggle-answer");
+    const closeModalBtn = document.getElementById("close-modal");
+    const resetBoardBtn = document.getElementById("reset-board");
+
+    let currentCell = null;
+    let answerVisible = false;
+
+    function renderBoard() {
+      boardEl.innerHTML = "";
+
+      // Render category headers
+      gameData.forEach(col => {
+        const catDiv = document.createElement("div");
+        catDiv.className = "category";
+        catDiv.textContent = col.category;
+        boardEl.appendChild(catDiv);
+      });
+
+      // Find max clues per category
+      const maxClues = Math.max(...gameData.map(c => c.clues.length));
+
+      for (let row = 0; row < maxClues; row++) {
+        gameData.forEach((col, colIndex) => {
+          const clue = col.clues[row];
+          const cell = document.createElement("div");
+          cell.className = "cell";
+          cell.dataset.col = colIndex;
+          cell.dataset.row = row;
+
+          if (clue) {
+            cell.textContent = "$" + clue.value;
+          } else {
+            cell.textContent = "";
+            cell.style.visibility = "hidden";
+          }
+
+          cell.addEventListener("click", () => openClue(cell));
+          boardEl.appendChild(cell);
+        });
+      }
+    }
+
+    function openClue(cell) {
+      if (cell.classList.contains("used")) return;
+
+      const colIndex = parseInt(cell.dataset.col, 10);
+      const rowIndex = parseInt(cell.dataset.row, 10);
+      const clue = gameData[colIndex].clues[rowIndex];
+
+      if (!clue) return;
+
+      currentCell = cell;
+      answerVisible = false;
+      modalAnswer.style.display = "none";
+      toggleAnswerBtn.textContent = "Show Answer";
+
+      modalCategory.textContent = gameData[colIndex].category;
+      modalValue.textContent = "$" + clue.value;
+      modalQuestion.textContent = clue.question;
+      modalAnswer.textContent = clue.answer;
+
+      modalBackdrop.style.display = "flex";
+    }
+
+    toggleAnswerBtn.addEventListener("click", () => {
+      answerVisible = !answerVisible;
+      modalAnswer.style.display = answerVisible ? "block" : "none";
+      toggleAnswerBtn.textContent = answerVisible ? "Hide Answer" : "Show Answer";
+    });
+
+    closeModalBtn.addEventListener("click", () => {
+      modalBackdrop.style.display = "none";
+      if (currentCell) {
+        currentCell.classList.add("used");
+      }
+    });
+
+    modalBackdrop.addEventListener("click", (e) => {
+      if (e.target === modalBackdrop) {
+        modalBackdrop.style.display = "none";
+        if (currentCell) {
+          currentCell.classList.add("used");
+        }
+      }
+    });
+
+    resetBoardBtn.addEventListener("click", () => {
+      document.querySelectorAll(".cell").forEach(c => c.classList.remove("used"));
+    });
+
+    renderBoard();
+  </script>
+</body>
+</html>
