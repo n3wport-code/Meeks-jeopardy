@@ -295,8 +295,12 @@
       text-shadow: 0 0 8px rgba(251, 191, 36, 0.8);
     }
 
-    /* === MODAL FOR CLUES === */
-    #modal-backdrop {
+    /* === GENERIC BACKDROP / MODALS === */
+    #modal-backdrop,
+    #scoreboard-backdrop,
+    #scoring-backdrop,
+    #fj-wager-backdrop,
+    #fj-question-backdrop {
       position: fixed;
       inset: 0;
       background: radial-gradient(circle at top, rgba(15,23,42,0.95), rgba(0,0,0,0.97));
@@ -309,32 +313,36 @@
       animation: fadeIn 0.2s ease-out;
     }
 
+    #scoreboard-backdrop,
+    #scoring-backdrop,
+    #fj-wager-backdrop,
+    #fj-question-backdrop {
+      z-index: 30;
+    }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: scale(1.02); }
       to { opacity: 1; transform: scale(1); }
     }
 
-    #modal {
-      background: radial-gradient(circle at top, #020617, #020617 40%, #020617);
+    #modal,
+    #scoreboard-modal,
+    #scoring-modal,
+    #fj-wager-modal,
+    #fj-question-modal {
+      background: #020617;
       border-radius: 16px;
       max-width: 720px;
       width: 100%;
-      padding: 22px 20px 18px;
+      padding: 18px 18px 14px;
       box-shadow: 0 20px 40px rgba(0,0,0,0.9);
       border: 1px solid rgba(148, 163, 184, 0.35);
-      position: relative;
-      overflow: hidden;
     }
 
-    #modal::before {
-      content: "";
-      position: absolute;
-      inset: -40%;
-      background:
-        radial-gradient(circle at top left, rgba(59,130,246,0.2), transparent 65%),
-        radial-gradient(circle at bottom right, rgba(250,204,21,0.18), transparent 60%);
-      opacity: 0.8;
-      pointer-events: none;
+    #modal {
+      background: radial-gradient(circle at top, #020617, #020617 40%, #020617);
+      padding: 22px 20px 18px;
+      max-width: 720px;
     }
 
     #modal-inner {
@@ -342,6 +350,7 @@
       z-index: 1;
     }
 
+    /* === CLUE MODAL === */
     #modal-category {
       font-size: 0.85rem;
       text-transform: uppercase;
@@ -393,7 +402,7 @@
       justify-content: flex-end;
     }
 
-    /* === TIMER === */
+    /* === TIMER (REGULAR CLUES) === */
     #timer-wrapper {
       display: flex;
       flex-direction: column;
@@ -406,7 +415,8 @@
       opacity: 0.85;
     }
 
-    #timer-bar {
+    #timer-bar,
+    #fj-timer-bar {
       width: 100%;
       height: 8px;
       border-radius: 999px;
@@ -415,7 +425,8 @@
       border: 1px solid rgba(148,163,184,0.5);
     }
 
-    #timer-fill {
+    #timer-fill,
+    #fj-timer-fill {
       width: 100%;
       height: 100%;
       background: linear-gradient(90deg, #22c55e, #facc15, #ef4444);
@@ -425,30 +436,6 @@
     }
 
     /* === SCOREBOARD MODAL === */
-    #scoreboard-backdrop,
-    #scoring-backdrop {
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(circle at top, rgba(15,23,42,0.9), rgba(0,0,0,0.95));
-      display: none;
-      justify-content: center;
-      align-items: center;
-      padding: 16px;
-      box-sizing: border-box;
-      z-index: 30;
-    }
-
-    #scoreboard-modal,
-    #scoring-modal {
-      background: #020617;
-      border-radius: 16px;
-      max-width: 480px;
-      width: 100%;
-      padding: 18px 18px 14px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.9);
-      border: 1px solid rgba(148, 163, 184, 0.35);
-    }
-
     #scoreboard-title,
     #scoring-title {
       font-size: 1.1rem;
@@ -498,6 +485,104 @@
       gap: 8px;
     }
 
+    /* === FINAL JEOPARDY MODALS === */
+    #fj-wager-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    #fj-wager-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .fj-wager-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 0.9rem;
+    }
+
+    .fj-wager-row input {
+      width: 100px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.6);
+      padding: 4px 8px;
+      font-size: 0.85rem;
+      background: #020617;
+      color: #f9fafb;
+    }
+
+    #fj-wager-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    #fj-question-category {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      opacity: 0.8;
+      margin-bottom: 6px;
+      letter-spacing: 0.1em;
+    }
+
+    #fj-question-text {
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    #fj-answer-text {
+      font-size: 1.2rem;
+      margin: 10px 0;
+      text-align: center;
+      color: var(--jeopardy-gold);
+      display: none;
+    }
+
+    #fj-timer-label {
+      font-size: 0.85rem;
+      margin-top: 4px;
+      margin-bottom: 6px;
+      text-align: center;
+      opacity: 0.9;
+    }
+
+    #fj-scoring-section {
+      margin-top: 12px;
+      display: none;
+    }
+
+    #fj-scoring-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .fj-scoring-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 0.9rem;
+    }
+
+    .fj-scoring-row select {
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.6);
+      padding: 4px 8px;
+      font-size: 0.85rem;
+      background: #020617;
+      color: #f9fafb;
+    }
+
     @media (max-width: 800px) {
       #board {
         grid-template-columns: repeat(3, minmax(90px, 1fr));
@@ -513,6 +598,9 @@
         font-size: 1.2rem;
       }
       #modal-answer {
+        font-size: 1.1rem;
+      }
+      #fj-question-text {
         font-size: 1.1rem;
       }
     }
@@ -537,17 +625,18 @@
     </div>
     <div id="player-list"></div>
     <div id="lobby-footer">
-      <small>Tip: You can remove a player by clicking the "×" on their name.</small>
-      <button class="btn-primary" id="start-game-btn" disabled>Play Jeopardy</button>
+      <small>Tip: Refreshing the page will keep players, scores, and used questions until you hit "Reset Game".</small>
+      <button class="btn-primary" id="start-game-btn" disabled>Play Jaopardy</button>
     </div>
   </div>
 
   <!-- GAME SCREEN -->
   <div id="game-screen">
     <div id="controls">
-      <button class="btn-secondary" id="reset-board">Reset Board</button>
+      <button class="btn-danger" id="reset-board">Reset Game</button>
       <button class="btn-secondary" id="shuffle-board">Shuffle Values</button>
       <button class="btn-primary" id="scoreboard-btn">Scoreboard</button>
+      <button class="btn-primary" id="final-jeopardy-btn">Final Jeopardy</button>
       <button class="btn-secondary" id="toggle-sound">Sound: On</button>
     </div>
 
@@ -589,13 +678,45 @@
     </div>
   </div>
 
-  <!-- SCORING MODAL (WHO GOT IT RIGHT?) -->
+  <!-- SCORING MODAL (WHO GOT IT RIGHT PER CLUE) -->
   <div id="scoring-backdrop">
     <div id="scoring-modal">
       <div id="scoring-title">Who answered correctly?</div>
       <div id="scoring-list"></div>
       <div id="scoring-footer">
         <button class="btn-secondary" id="scoring-no-points">No points awarded</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINAL JEOPARDY WAGER MODAL -->
+  <div id="fj-wager-backdrop">
+    <div id="fj-wager-modal">
+      <div id="fj-wager-title">Final Jeopardy Wagers</div>
+      <div id="fj-wager-list"></div>
+      <div id="fj-wager-footer">
+        <button class="btn-secondary" id="fj-wager-cancel">Cancel</button>
+        <button class="btn-primary" id="fj-wager-start">Start Final Jeopardy</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINAL JEOPARDY QUESTION MODAL -->
+  <div id="fj-question-backdrop">
+    <div id="fj-question-modal">
+      <div id="fj-question-category"></div>
+      <div id="fj-question-text"></div>
+      <div id="fj-answer-text"></div>
+      <div id="fj-timer-label"></div>
+      <div id="fj-timer-bar">
+        <div id="fj-timer-fill"></div>
+      </div>
+      <div id="fj-scoring-section">
+        <div id="fj-scoring-list"></div>
+        <button class="btn-primary" id="fj-apply-scores">Apply Wagers & Close</button>
+      </div>
+      <div style="margin-top: 8px; text-align: right;">
+        <button class="btn-secondary" id="fj-question-close">Close</button>
       </div>
     </div>
   </div>
@@ -655,16 +776,54 @@
       }
     ];
 
-    // === STEP 2: BASIC SETTINGS (YOU CAN TWEAK THESE) ===
-    const settings = {
-      timerSeconds: 15,
-      enableDailyDouble: true,
-      soundEnabledByDefault: true
+    // === STEP 1B: FINAL JEOPARDY QUESTION ===
+    const finalJeopardyConfig = {
+      category: "Final Friend Trivia",
+      question: "Which friend was the first to fall asleep at the beach trip?",
+      answer: "Sam"
     };
 
-    // === PLAYERS STATE ===
-    let players = [];
-    let nextPlayerId = 1;
+    // === STEP 2: BASIC SETTINGS ===
+    const settings = {
+      timerSeconds: 15,           // normal clue timer
+      enableDailyDouble: true,
+      soundEnabledByDefault: true,
+      finalReadSeconds: 7,        // Final Jeopardy read time
+      finalAnswerSeconds: 20      // Final Jeopardy answer time
+    };
+
+    // === GAME STATE + LOCALSTORAGE ===
+    const STORAGE_KEY = "friendJeopardy_state_v2";
+
+    const defaultGameState = {
+      players: [],
+      nextPlayerId: 1,
+      usedCells: [],          // ["0-0", "1-2", ...]
+      shuffleSeed: null,      // number or null
+      gameStarted: false,
+      finalJeopardyPlayed: false
+    };
+
+    let gameState = { ...defaultGameState };
+
+    function loadGameStateFromStorage() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const saved = JSON.parse(raw);
+        gameState = { ...defaultGameState, ...saved };
+      } catch {}
+    }
+
+    function persistGameState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(gameState));
+    }
+
+    function resetGameCompletely() {
+      if (!confirm("Reset the entire game? This clears players, scores, and used questions.")) return;
+      localStorage.removeItem(STORAGE_KEY);
+      location.reload();
+    }
 
     // === SOUND FX ===
     class SoundFX {
@@ -719,7 +878,7 @@
 
     const sfx = new SoundFX();
 
-    // === TIMER ===
+    // === TIMER FOR REGULAR CLUES ===
     class ClueTimer {
       constructor(seconds, fillEl) {
         this.seconds = seconds;
@@ -758,7 +917,17 @@
       }
     }
 
-    // === GAME LOGIC ===
+    // === SEEDED RNG FOR SHUFFLE (PERSISTENT) ===
+    function mulberry32(a) {
+      return function() {
+        a |= 0; a = a + 0x6D2B79F5 | 0;
+        let t = Math.imul(a ^ a >>> 15, 1 | a);
+        t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+      };
+    }
+
+    // === MAIN GAME LOGIC ===
     const JeopardyGame = (() => {
       const boardEl = document.getElementById("board");
       const modalBackdrop = document.getElementById("modal-backdrop");
@@ -779,9 +948,25 @@
       const scoreboardCloseBtn = document.getElementById("scoreboard-close");
 
       const scoringBackdrop = document.getElementById("scoring-backdrop");
-      const scoringTitle = document.getElementById("scoring-title");
       const scoringList = document.getElementById("scoring-list");
       const scoringNoPointsBtn = document.getElementById("scoring-no-points");
+
+      const finalBtn = document.getElementById("final-jeopardy-btn");
+      const fjWagerBackdrop = document.getElementById("fj-wager-backdrop");
+      const fjWagerList = document.getElementById("fj-wager-list");
+      const fjWagerCancelBtn = document.getElementById("fj-wager-cancel");
+      const fjWagerStartBtn = document.getElementById("fj-wager-start");
+
+      const fjQuestionBackdrop = document.getElementById("fj-question-backdrop");
+      const fjQuestionCategory = document.getElementById("fj-question-category");
+      const fjQuestionText = document.getElementById("fj-question-text");
+      const fjAnswerText = document.getElementById("fj-answer-text");
+      const fjTimerLabel = document.getElementById("fj-timer-label");
+      const fjTimerFill = document.getElementById("fj-timer-fill");
+      const fjScoringSection = document.getElementById("fj-scoring-section");
+      const fjScoringList = document.getElementById("fj-scoring-list");
+      const fjApplyScoresBtn = document.getElementById("fj-apply-scores");
+      const fjQuestionCloseBtn = document.getElementById("fj-question-close");
 
       let currentCell = null;
       let currentClue = null;
@@ -790,27 +975,23 @@
       let dailyDoubleCellKey = null;
       let scoringPromptShown = false;
 
-      const stateKey = "friendJeopardy_usedCells_v1";
+      let fjWagers = {};
+      let fjTimerInterval = null;
+      let fjStage = null;
+      let fjStageTotal = 0;
+      let fjStageRemaining = 0;
 
       function cellKey(colIndex, rowIndex) {
         return `${colIndex}-${rowIndex}`;
       }
 
-      function saveUsedCells() {
-        const used = Array.from(document.querySelectorAll(".cell.used")).map(
-          c => cellKey(c.dataset.col, c.dataset.row)
-        );
-        localStorage.setItem(stateKey, JSON.stringify(used));
+      function getUsedCellsSet() {
+        return new Set(gameState.usedCells || []);
       }
 
-      function loadUsedCells() {
-        try {
-          const text = localStorage.getItem(stateKey);
-          if (!text) return new Set();
-          return new Set(JSON.parse(text));
-        } catch {
-          return new Set();
-        }
+      function saveUsedCells(set) {
+        gameState.usedCells = Array.from(set);
+        persistGameState();
       }
 
       function pickDailyDouble(cells) {
@@ -819,14 +1000,30 @@
           return;
         }
         const index = Math.floor(Math.random() * cells.length);
-        dailyDoubleCellKey = cellKey(cells[index].dataset.col, cells[index].dataset.row);
+        const key = cellKey(cells[index].dataset.col, cells[index].dataset.row);
+        dailyDoubleCellKey = key;
         cells[index].classList.add("daily-double");
       }
 
-      function renderBoard({ shuffle = false } = {}) {
-        const usedCells = loadUsedCells();
+      function buildShuffledData() {
+        const seed = gameState.shuffleSeed;
+        if (seed == null) return gameData;
+        const rng = mulberry32(seed);
+        return gameData.map(col => {
+          const cluesCopy = [...col.clues];
+          for (let i = cluesCopy.length - 1; i > 0; i--) {
+            const j = Math.floor(rng() * (i + 1));
+            [cluesCopy[i], cluesCopy[j]] = [cluesCopy[j], cluesCopy[i]];
+          }
+          return { ...col, clues: cluesCopy };
+        });
+      }
+
+      function renderBoard() {
+        const usedSet = getUsedCellsSet();
         boardEl.innerHTML = "";
 
+        // Categories
         gameData.forEach(col => {
           const catDiv = document.createElement("div");
           catDiv.className = "category";
@@ -834,13 +1031,7 @@
           boardEl.appendChild(catDiv);
         });
 
-        const dataToRender = shuffle
-          ? gameData.map(col => ({
-              ...col,
-              clues: [...col.clues].sort(() => Math.random() - 0.5)
-            }))
-          : gameData;
-
+        const dataToRender = buildShuffledData();
         const maxClues = Math.max(...dataToRender.map(c => c.clues.length));
         const clueCells = [];
 
@@ -855,7 +1046,7 @@
             if (clue) {
               cell.textContent = `$${clue.value}`;
               const key = cellKey(colIndex, row);
-              if (usedCells.has(key)) {
+              if (usedSet.has(key)) {
                 cell.classList.add("used");
               }
               cell.addEventListener("click", () => openClue(cell, clue, col.category));
@@ -869,6 +1060,12 @@
         }
 
         pickDailyDouble(clueCells);
+
+        // Disable Final Jeopardy button if already played
+        if (gameState.finalJeopardyPlayed) {
+          finalBtn.disabled = true;
+          finalBtn.textContent = "Final Jeopardy Done";
+        }
       }
 
       function openClue(cell, clue, categoryName) {
@@ -901,22 +1098,20 @@
       }
 
       function openScoringModal() {
-        if (!currentClue || players.length === 0) return;
-        scoringTitle.textContent = `Who answered correctly? (+$${currentClue.value})`;
+        if (!currentClue || gameState.players.length === 0) return;
         scoringList.innerHTML = "";
-
-        players.forEach(p => {
+        gameState.players.forEach(p => {
           const btn = document.createElement("button");
           btn.className = "btn-primary scoring-player-btn";
           btn.textContent = `${p.name} +$${currentClue.value}`;
           btn.addEventListener("click", () => {
             p.score += currentClue.value;
+            persistGameState();
             if (scoreboardBackdrop.style.display === "flex") renderScoreboard();
             closeScoringModal();
           });
           scoringList.appendChild(btn);
         });
-
         scoringBackdrop.style.display = "flex";
       }
 
@@ -931,7 +1126,7 @@
         toggleAnswerBtn.textContent = answerVisible ? "Hide Answer (Space)" : "Show Answer (Space)";
         if (answerVisible) {
           sfx.showAnswer();
-          if (!scoringPromptShown && players.length > 0) {
+          if (!scoringPromptShown && gameState.players.length > 0) {
             scoringPromptShown = true;
             openScoringModal();
           }
@@ -945,21 +1140,22 @@
         }
         modalBackdrop.style.display = "none";
         currentCell.classList.add("used");
-        saveUsedCells();
+
+        const usedSet = getUsedCellsSet();
+        usedSet.add(cellKey(currentCell.dataset.col, currentCell.dataset.row));
+        saveUsedCells(usedSet);
+
         timer.stop();
         currentCell = null;
         currentClue = null;
       }
 
-      function resetBoard() {
-        document.querySelectorAll(".cell").forEach(c => c.classList.remove("used", "daily-double"));
-        localStorage.removeItem(stateKey);
-        renderBoard();
-      }
-
       function shuffleBoard() {
-        localStorage.removeItem(stateKey);
-        renderBoard({ shuffle: true });
+        if (!confirm("Shuffle questions and reset which ones are used? Scores will stay.")) return;
+        gameState.usedCells = [];
+        gameState.shuffleSeed = (Date.now() & 0xffffffff);
+        persistGameState();
+        renderBoard();
       }
 
       function toggleSound() {
@@ -969,7 +1165,7 @@
 
       function renderScoreboard() {
         scoreboardList.innerHTML = "";
-        if (players.length === 0) {
+        if (!gameState.players.length) {
           const p = document.createElement("div");
           p.textContent = "No players yet. Add players in the lobby screen.";
           p.style.opacity = "0.8";
@@ -977,7 +1173,7 @@
           scoreboardList.appendChild(p);
           return;
         }
-        const sorted = [...players].sort((a, b) => b.score - a.score);
+        const sorted = [...gameState.players].sort((a, b) => b.score - a.score);
         sorted.forEach(p => {
           const row = document.createElement("div");
           row.className = "scoreboard-row";
@@ -1010,9 +1206,173 @@
         }
       }
 
+      // === FINAL JEOPARDY FLOW ===
+      function openFinalJeopardy() {
+        if (!gameState.players.length) {
+          alert("Add some players first!");
+          return;
+        }
+        if (gameState.finalJeopardyPlayed) {
+          alert("Final Jeopardy has already been played.");
+          return;
+        }
+
+        fjWagers = {};
+        fjWagerList.innerHTML = "";
+        gameState.players.forEach(p => {
+          const row = document.createElement("div");
+          row.className = "fj-wager-row";
+          const label = document.createElement("span");
+          label.textContent = `${p.name} (score: ${p.score})`;
+          const input = document.createElement("input");
+          input.type = "number";
+          const max = Math.max(0, p.score);
+          input.min = 0;
+          input.max = max;
+          input.value = max; // default full wager
+          input.id = `fj-wager-${p.id}`;
+          row.appendChild(label);
+          row.appendChild(input);
+          fjWagerList.appendChild(row);
+        });
+
+        fjWagerBackdrop.style.display = "flex";
+      }
+
+      function startFinalJeopardy() {
+        fjWagers = {};
+        for (const p of gameState.players) {
+          const input = document.getElementById(`fj-wager-${p.id}`);
+          if (!input) continue;
+          let v = parseInt(input.value, 10);
+          if (isNaN(v) || v < 0) v = 0;
+          const max = Math.max(0, p.score);
+          if (v > max) v = max;
+          fjWagers[p.id] = v;
+        }
+
+        fjWagerBackdrop.style.display = "none";
+        openFinalQuestion();
+      }
+
+      function openFinalQuestion() {
+        fjQuestionCategory.textContent = finalJeopardyConfig.category;
+        fjQuestionText.textContent = finalJeopardyConfig.question;
+        fjAnswerText.textContent = `Answer: ${finalJeopardyConfig.answer}`;
+        fjAnswerText.style.display = "none";
+        fjScoringSection.style.display = "none";
+        fjTimerLabel.textContent = "";
+        fjTimerFill.style.transform = "scaleX(0)";
+        fjQuestionBackdrop.style.display = "flex";
+
+        startFinalTimers();
+      }
+
+      function updateFJTimerUI() {
+        const secondsLeft = Math.ceil(fjStageRemaining);
+        if (fjStage === "read") {
+          fjTimerLabel.textContent = `Reading time: ${secondsLeft}s`;
+        } else if (fjStage === "answer") {
+          fjTimerLabel.textContent = `Answer time: ${secondsLeft}s`;
+        }
+        const ratio = Math.max(0, fjStageRemaining / fjStageTotal);
+        fjTimerFill.style.transform = `scaleX(${ratio})`;
+      }
+
+      function startFinalTimers() {
+        fjStage = "read";
+        fjStageTotal = settings.finalReadSeconds;
+        fjStageRemaining = settings.finalReadSeconds;
+        updateFJTimerUI();
+
+        if (fjTimerInterval) clearInterval(fjTimerInterval);
+        fjTimerInterval = setInterval(() => {
+          fjStageRemaining -= 0.2;
+          if (fjStageRemaining <= 0) {
+            if (fjStage === "read") {
+              fjStage = "answer";
+              fjStageTotal = settings.finalAnswerSeconds;
+              fjStageRemaining = settings.finalAnswerSeconds;
+              updateFJTimerUI();
+            } else {
+              clearInterval(fjTimerInterval);
+              fjTimerInterval = null;
+              onFinalTimerComplete();
+            }
+          } else {
+            updateFJTimerUI();
+          }
+        }, 200);
+      }
+
+      function onFinalTimerComplete() {
+        fjTimerLabel.textContent = "Time's up!";
+        fjTimerFill.style.transform = "scaleX(0)";
+        fjAnswerText.style.display = "block";
+        renderFinalScoring();
+      }
+
+      function renderFinalScoring() {
+        fjScoringList.innerHTML = "";
+        gameState.players.forEach(p => {
+          const row = document.createElement("div");
+          row.className = "fj-scoring-row";
+          const label = document.createElement("span");
+          label.textContent = `${p.name} (wagered $${fjWagers[p.id] || 0})`;
+
+          const select = document.createElement("select");
+          select.id = `fj-result-${p.id}`;
+          [
+            { value: "correct", label: "Correct (+wager)" },
+            { value: "wrong", label: "Wrong (−wager)" },
+            { value: "noanswer", label: "No change" }
+          ].forEach(opt => {
+            const o = document.createElement("option");
+            o.value = opt.value;
+            o.textContent = opt.label;
+            select.appendChild(o);
+          });
+
+          row.appendChild(label);
+          row.appendChild(select);
+          fjScoringList.appendChild(row);
+        });
+
+        fjScoringSection.style.display = "block";
+      }
+
+      function applyFinalScores() {
+        gameState.players.forEach(p => {
+          const wager = fjWagers[p.id] || 0;
+          const select = document.getElementById(`fj-result-${p.id}`);
+          if (!select) return;
+          const result = select.value;
+          if (result === "correct") {
+            p.score += wager;
+          } else if (result === "wrong") {
+            p.score -= wager;
+          }
+        });
+
+        gameState.finalJeopardyPlayed = true;
+        persistGameState();
+        if (scoreboardBackdrop.style.display === "flex") renderScoreboard();
+        fjQuestionBackdrop.style.display = "none";
+        finalBtn.disabled = true;
+        finalBtn.textContent = "Final Jeopardy Done";
+      }
+
+      function closeFinalQuestion() {
+        if (fjTimerInterval) {
+          clearInterval(fjTimerInterval);
+          fjTimerInterval = null;
+        }
+        fjQuestionBackdrop.style.display = "none";
+      }
+
       function init() {
         renderBoard();
-        resetBoardBtn.addEventListener("click", resetBoard);
+        resetBoardBtn.addEventListener("click", resetGameCompletely);
         shuffleBoardBtn.addEventListener("click", shuffleBoard);
         toggleAnswerBtn.addEventListener("click", toggleAnswer);
         closeModalBtn.addEventListener("click", closeModal);
@@ -1035,6 +1395,19 @@
         scoringBackdrop.addEventListener("click", (e) => {
           if (e.target === scoringBackdrop) closeScoringModal();
         });
+
+        finalBtn.addEventListener("click", openFinalJeopardy);
+        fjWagerCancelBtn.addEventListener("click", () => { fjWagerBackdrop.style.display = "none"; });
+        fjWagerBackdrop.addEventListener("click", (e) => {
+          if (e.target === fjWagerBackdrop) fjWagerBackdrop.style.display = "none";
+        });
+        fjWagerStartBtn.addEventListener("click", startFinalJeopardy);
+
+        fjQuestionBackdrop.addEventListener("click", (e) => {
+          if (e.target === fjQuestionBackdrop) closeFinalQuestion();
+        });
+        fjQuestionCloseBtn.addEventListener("click", closeFinalQuestion);
+        fjApplyScoresBtn.addEventListener("click", applyFinalScores);
       }
 
       return { init };
@@ -1051,7 +1424,7 @@
 
       function renderLobbyPlayers() {
         playerListEl.innerHTML = "";
-        players.forEach(p => {
+        gameState.players.forEach(p => {
           const chip = document.createElement("div");
           chip.className = "player-chip";
           const nameSpan = document.createElement("span");
@@ -1060,21 +1433,23 @@
           removeBtn.type = "button";
           removeBtn.textContent = "×";
           removeBtn.addEventListener("click", () => {
-            players = players.filter(x => x.id !== p.id);
+            gameState.players = gameState.players.filter(x => x.id !== p.id);
+            persistGameState();
             renderLobbyPlayers();
           });
           chip.appendChild(nameSpan);
           chip.appendChild(removeBtn);
           playerListEl.appendChild(chip);
         });
-        startGameBtn.disabled = players.length === 0;
+        startGameBtn.disabled = gameState.players.length === 0;
       }
 
       function addPlayerFromInput() {
         const name = playerNameInput.value.trim();
         if (!name) return;
-        players.push({ id: nextPlayerId++, name, score: 0 });
+        gameState.players.push({ id: gameState.nextPlayerId++, name, score: 0 });
         playerNameInput.value = "";
+        persistGameState();
         renderLobbyPlayers();
         playerNameInput.focus();
       }
@@ -1088,17 +1463,27 @@
       });
 
       startGameBtn.addEventListener("click", () => {
-        if (players.length === 0) return;
+        if (!gameState.players.length) return;
+        gameState.gameStarted = true;
+        persistGameState();
         lobbyScreen.style.display = "none";
         gameScreen.style.display = "block";
         JeopardyGame.init();
       });
 
+      // Restore from state if game already started
       renderLobbyPlayers();
+      if (gameState.gameStarted && gameState.players.length > 0) {
+        lobbyScreen.style.display = "none";
+        gameScreen.style.display = "block";
+        JeopardyGame.init();
+      }
     }
 
-    document.addEventListener("DOMContentLoaded", setupLobby);
+    document.addEventListener("DOMContentLoaded", () => {
+      loadGameStateFromStorage();
+      setupLobby();
+    });
   </script>
 </body>
 </html>
-
